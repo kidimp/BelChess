@@ -1,3 +1,5 @@
+package by.bechess.app;
+
 public class Queen extends Piece{
     public Queen(Cell cell, Color color){
         super(cell, color);

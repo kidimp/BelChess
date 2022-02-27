@@ -1,3 +1,5 @@
+package by.bechess.app;
+
 public class Pawn extends Piece{
     public Pawn(Cell cell, Color color){
         super(cell, color);

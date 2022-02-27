@@ -1,3 +1,5 @@
+package by.bechess.app;
+
 public abstract class Piece {
     protected Cell cell;
     protected String name,
@@ -21,5 +23,12 @@ public abstract class Piece {
 
     public abstract boolean isPossibleMove(int x, int y);
 
-    public void move(int x, int y){ }
+    public void move(int x, int y){
+        //cell.setPiece(null);
+    }
+
+    public void remove() {
+        cell = null;
+    }
+
 }

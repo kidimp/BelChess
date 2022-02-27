@@ -1,3 +1,5 @@
+package by.bechess.app;
+
 public class Knight extends Piece{
     public Knight(Cell cell, Color color){
         super(cell, color);
