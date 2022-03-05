@@ -1,3 +1,5 @@
+package by.bechess.app;
+
 public class Bishop extends Piece{
     public Bishop(Cell cell, Color color){
         super(cell, color);
@@ -6,7 +8,19 @@ public class Bishop extends Piece{
         this.value = 3;
     }
 
-    public boolean isPossibleMove(int x, int y) {
-        return true;
+    public boolean isCanTakeThrone() { return false; }
+
+    public boolean isPossibleMove(Cell toCell) {
+        int deltaX = Math.abs(cell.getX() -toCell.getX());
+        int deltaY = Math.abs(cell.getY() -toCell.getY());
+
+
+        if (deltaX == deltaY) {
+            if ((toCell.getPiece() == null) || (isCanTake(toCell))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -8,7 +8,18 @@ public class Knight extends Piece{
         this.value = 2;
     }
 
-    public boolean isPossibleMove(int x, int y) {
-        return true;
+    public boolean isCanTakeThrone() { return false; }
+
+    public boolean isPossibleMove(Cell toCell) {
+        int deltaX = Math.abs(cell.getX() -toCell.getX());
+        int deltaY = Math.abs(cell.getY() -toCell.getY());
+
+        if (((deltaX == 2) && (deltaY == 1)) || ((deltaY == 2) && (deltaX == 1))) {
+            if ((toCell.getPiece() == null) || (isCanTake(toCell))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

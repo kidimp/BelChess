@@ -87,4 +87,27 @@ public class Board {
     public Cell getCell(int x, int y) {
         return cells[y][x];
     }
+
+    //Атрымаць усе хады для пэўнага колеру
+    public ArrayList<Move> getAllPossibleMoves(Color colorToFind) {
+        ArrayList<Move> moves = new ArrayList<>();
+        for (Piece piece : pieces) {
+            if (piece.getColor() == colorToFind) {
+                int fromX = piece.cell.getX(),
+                        fromY = piece.cell.getY();
+                for (int y = 0; y < BOARD_SIZE; y++) {
+                    for (int x = 0; x < BOARD_SIZE; x++) {
+                        if (!((fromX == x) && (fromY == y))) {
+                            Move move = new Move(fromX, fromY, x, y, this);
+                            if (move.isPossible()) {
+                                moves.add(move);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return moves;
+    }
 }

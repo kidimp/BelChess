@@ -1,5 +1,6 @@
 package by.bechess.app;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
@@ -33,7 +34,7 @@ public class Menu {
         return fromPoint + toPoint;
     }
 
-    public static String getOpponentMove() {
-        return "";
+    public static String getOpponentMove(AI aiPlayer) {
+        return aiPlayer.getMove().getNotation().replace("-","").substring(1);
     }
 }

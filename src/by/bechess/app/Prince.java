@@ -8,7 +8,19 @@ public class Prince extends Piece{
         this.value = 6;
     }
 
-    public boolean isPossibleMove(int x, int y) {
-        return true;
+    public boolean isCanTakeThrone() { return true; }
+
+    public boolean isPossibleMove(Cell toCell) {
+        int deltaX = Math.abs(cell.getX() -toCell.getX());
+        int deltaY = Math.abs(cell.getY() -toCell.getY());
+
+        if (((deltaX == 0) && (deltaY <= 2)) || ((deltaY == 0) && (deltaX <= 2))
+                || ((deltaX == deltaY) && (deltaX <= 2))) {
+            if ((toCell.getPiece() == null) || (isCanTake(toCell))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

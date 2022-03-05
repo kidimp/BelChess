@@ -8,7 +8,18 @@ public class King extends Piece{
         this.value = 7;
     }
 
-    public boolean isPossibleMove(int x, int y) {
-        return true;
+    public boolean isCanTakeThrone() { return true; }
+
+    public boolean isPossibleMove(Cell toCell) {
+        int deltaX = Math.abs(cell.getX() -toCell.getX());
+        int deltaY = Math.abs(cell.getY() -toCell.getY());
+
+        if ((deltaX <= 1) && (deltaY <= 1)) {
+            if ((toCell.getPiece() == null) || (isCanTake(toCell))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

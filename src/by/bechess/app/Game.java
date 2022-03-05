@@ -1,5 +1,7 @@
 package by.bechess.app;
 
+import java.util.ArrayList;
+
 public class Game {
     private final String PIECES_START_POSITIONS = "lvmgakvml/rrrrrrrrr/9/9/9/9/9/RRRRRRRRR/LMVKAGMVL";
     private Color playerColor,
@@ -43,11 +45,14 @@ public class Game {
 
     public void makeMove(String enteredMove) {
         Move move = new Move(enteredMove, gameBoard);
-        if (move.isPossible()) {
-            move.make();
-            gameBoard.draw();
+
+        if (move.getPiece().getColor() == whoisTurn) {
+            if (move.isPossible()) {
+                move.make();
+                gameBoard.draw();
+                //Змяняем чарговасць ходу
+                whoisTurn = (whoisTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
+            }
         }
-        //Змяняем чарговасць ходу
-        whoisTurn = (whoisTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 }

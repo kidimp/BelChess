@@ -6,11 +6,20 @@ public abstract class Piece {
                      shortName;
     protected int value;
     protected Color color;
+    protected boolean isMoved;
 
     public Piece(Cell cell, Color color){
         this.cell = cell;
         this.cell.setPiece(this);
         this.color = color;
+    }
+
+    protected boolean isCanTake(Cell toCell) {
+        Piece pieceTaken = toCell.getPiece();
+        if ((pieceTaken != null) && (pieceTaken.color != color)) {
+            return true;
+        }
+        return false;
     }
 
     public void draw(){
@@ -21,7 +30,11 @@ public abstract class Piece {
 
     public String getShortName() { return shortName; }
 
-    public abstract boolean isPossibleMove(int x, int y);
+    public Color getColor() { return color; }
+
+    public abstract boolean isPossibleMove(Cell toCell);
+
+    public abstract boolean isCanTakeThrone();
 
     public void move(int x, int y){
         //cell.setPiece(null);
@@ -30,5 +43,7 @@ public abstract class Piece {
     public void remove() {
         cell = null;
     }
+
+
 
 }
