@@ -7,6 +7,7 @@ public class Cell {
                          THRONE_CELL = "\u25A3";
     private Piece piece = null;
     private Type cellType = Type.REGULAR;
+    private Color cellColor;
 
     enum Type {
         REGULAR,
@@ -26,6 +27,8 @@ public class Cell {
                 cellType = Type.PALACE;
             }
         }
+        //Заданне колеру ячэйкі
+        cellColor = ((x + y) % 2 != 0) ? Color.WHITE : Color.BLACK;
     }
 
     public Type getCellType() { return cellType; }
@@ -36,12 +39,15 @@ public class Cell {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+        //this.piece.cell = this;
     }
 
     public Piece getPiece() { return piece; }
 
+    public Color getCellColor() { return cellColor; }
+
     public void draw(){
-        String cellSymbol = ((x + y) % 2 != 0) ? WHITE_CELL : BLACK_CELL;
+        String cellSymbol = (cellColor == Color.WHITE) ? WHITE_CELL : BLACK_CELL;
         if (cellType == Type.THRONE) {
             cellSymbol = THRONE_CELL;
         }

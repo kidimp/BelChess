@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 public class Board {
     private final int BOARD_SIZE = 9,
-              BOARD_SIZE_IN_ARRAY = BOARD_SIZE -1;
+              BOARD_SIZE_IN_ARRAY = BOARD_SIZE -1,
+              THRONE_POSITION = 4;
     private Cell[][] cells;
     private ArrayList<Piece> pieces;
     private boolean isBoardRotated;
+    public Position position;
 
     Board(Color playersColor){
         cells = new Cell[BOARD_SIZE][BOARD_SIZE];
@@ -78,6 +80,8 @@ public class Board {
                 yPos--;
             }
         }
+        //Ствараем пазіцыю
+        position = new Position();
     }
 
     public Piece findPiece(Point point) {
@@ -109,5 +113,90 @@ public class Board {
         }
 
         return moves;
+    }
+
+    public class Position {
+        King whiteKing, blackKing;
+        Prince whitePrince, blackPrince;
+        Bishop[] whiteBishops, blackBishops;
+
+        Position() {
+            whiteBishops = new Bishop[2];
+            blackBishops = new Bishop[2];
+            int[] amountOfBishops = {0, 0};
+
+            for (Piece piece : pieces) {
+                //Князь
+                if (piece.getClass() == King.class) {
+                    if (piece.getColor() == Color.WHITE) {
+                        whiteKing = (King) piece;
+                    }
+                    else{
+                        blackKing = (King) piece;
+                    }
+                }
+                //Княжыч
+                if (piece.getClass() == Prince.class) {
+                    if (piece.getColor() == Color.WHITE) {
+                        whitePrince = (Prince) piece;
+                    }
+                    else{
+                        blackPrince = (Prince) piece;
+                    }
+                }
+                //Гарматы
+                if (piece.getClass() == Bishop.class) {
+                    if (piece.getColor() == Color.WHITE) {
+                        whiteBishops[amountOfBishops[0]++] = (Bishop) piece;
+                    }
+                    else{
+                        blackBishops[amountOfBishops[1]++] = (Bishop) piece;
+                    }
+                }
+            }
+        }
+
+        public boolean isValid() {
+            //Праверка наяўнасці Князёў
+            if ((whiteKing == null) || (blackKing == null)) {
+                return false;
+            }
+
+            //Праверка валіднасці фігур на Троне
+            Piece pieceOnThrone = cells[THRONE_POSITION][THRONE_POSITION].getPiece();
+            if (pieceOnThrone != null) {
+                //Праверка прысутнасці на Троне толькі Князя або Княжыча
+                if (!((pieceOnThrone.getClass() == King.class) || (pieceOnThrone.getClass() == Prince.class))) {
+                    return false;
+                }
+
+                //Праверка белага Князя, каб быў на Троне або ў Палацы
+                if (pieceOnThrone.getColor() == Color.WHITE) {
+                    if (whiteKing.cell.getCellType() == Cell.Type.REGULAR) {
+                        return false;
+                    }
+                }
+                //Праверка чорнага Князя, каб быў на Троне або ў Палацы
+                else {
+                    if (blackKing.cell.getCellType() == Cell.Type.REGULAR) {
+                        return false;
+                    }
+                }
+            }
+
+            //Праверка разнапольных гарматаў
+            if (whiteBishops[0].cell.getCellColor() == whiteBishops[1].cell.getCellColor()) {
+                return false;
+            }
+            if (blackBishops[0].cell.getCellColor() == blackBishops[1].cell.getCellColor()) {
+                return false;
+            }
+
+            //Праверка на Мат
+
+            //Праверка на абарону Трона
+
+            return true;
+        }
     }
 }

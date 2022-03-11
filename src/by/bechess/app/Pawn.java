@@ -17,7 +17,11 @@ public class Pawn extends Piece{
         if (((deltaX == 0)
                 && ((deltaY == 1) || ((deltaY == 2) && (!isMoved))) && (toCell.getPiece() == null))
             || ((deltaX == 1) && (deltaY == 1) && (isCanTake(toCell)))) {
-            return true;
+            //Ход толькі наперад
+            if (((color == Color.WHITE) && (cell.getY() < toCell.getY()))
+                || ((color == Color.BLACK) && (cell.getY() > toCell.getY()))) {
+                return true;
+            }
         }
 
         return false;

@@ -36,9 +36,17 @@ public class Move {
 
     public void make() {
         piece.cell.setPiece(null);
-        board.getCell(toPoint.x, toPoint.y).setPiece(piece);
+        piece.setCell(board.getCell(toPoint.x, toPoint.y));
         if (pieceEaten != null) {
             pieceEaten.remove();
+        }
+    }
+
+    public void revoke(){
+        piece.cell.setPiece(null);
+        piece.setCell(board.getCell(fromPoint.x, fromPoint.y));
+        if (pieceEaten != null) {
+            pieceEaten.setCell(board.getCell(toPoint.x, toPoint.y));
         }
     }
 
@@ -49,7 +57,6 @@ public class Move {
         if (diffX != 0) { diffX /= Math.abs(diffX); }
         if (diffY != 0) { diffY /= Math.abs(diffY); }
 
-        //for (int x = fromPoint.x +diffX, y = fromPoint.y +diffY; (x != toPoint.x) || (y != toPoint.y); x += diffX, y += diffY) {
         int x = fromPoint.x,
             y = fromPoint.y;
         do {
@@ -73,12 +80,19 @@ public class Move {
     public Piece getPiece() { return piece; }
 
     public boolean isPossible() {
+        boolean toRet = false;
+
         if ((piece != null) && (piece.isPossibleMove(board.getCell(toPoint.x, toPoint.y)))) {
             //Для ўсіх фігур акрамя каня павяраем ці вольны шлях
             if ((isFreePath()) || (piece.getClass() == Knight.class)) {
-                return true;
+                //Робім ход, правяраем пазіцыю, адмяняем
+                make();
+                if (board.position.isValid()) {
+                    toRet = true;
+                }
+                revoke();
             }
         }
-        return false;
+        return toRet;
     }
 }

@@ -9,8 +9,9 @@ public abstract class Piece {
     protected boolean isMoved;
 
     public Piece(Cell cell, Color color){
-        this.cell = cell;
-        this.cell.setPiece(this);
+        //this.cell = cell;
+        //this.cell.setPiece(this);
+        setCell(cell);
         this.color = color;
     }
 
@@ -38,6 +39,11 @@ public abstract class Piece {
 
     public void move(int x, int y){
         //cell.setPiece(null);
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
+        this.cell.setPiece(this);
     }
 
     public void remove() {
