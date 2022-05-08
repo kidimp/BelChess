@@ -84,6 +84,47 @@ public class Board {
         position = new Position();
     }
 
+    public boolean isFreePath(Cell fromCell, Cell toCell) {
+        int x = fromCell.getX(), y = fromCell.getY();
+        int toX = toCell.getX(), toY = toCell.getY();
+
+        int diffX = toX - x;
+        int diffY = toY - y;
+        if (diffX != 0) { diffX /= Math.abs(diffX); }
+        if (diffY != 0) { diffY /= Math.abs(diffY); }
+
+
+        do {
+            if (x != toX) { x += diffX; }
+            if (y != toY) { y += diffY; }
+
+            Cell cell = getCell(x, y);
+            if ((cell.getPiece() != null)
+                    || ((cell.getCellType() == Cell.Type.THRONE) && (fromCell.getPiece().isCanTakeThrone() == false))){
+                return false;
+            }
+        } while ((x != toX) || (y != toY));
+
+        return true;
+    }
+
+    //Атрымаць колькасць фігур, якія могуць пахадзіць у патрэбную ячэйку
+    public int getAmountOfAttackers(Cell cell, Color sideColor) {
+        int amountOfAttackers = 0;
+
+        for (Piece piece : pieces) {
+            if (piece.getColor() != sideColor) {
+                if (piece.isPossibleMove(cell)) {
+                    //Для ўсіх фігур акрамя каня павяраем ці вольны шлях
+                    if ((isFreePath(piece.cell, cell)) || (piece.getClass() == Knight.class)) {
+                        amountOfAttackers++;
+                    }
+                }
+            }
+        }
+        return amountOfAttackers;
+    }
+
     public Piece findPiece(Point point) {
         return cells[point.y][point.x].getPiece();
     }
@@ -126,6 +167,20 @@ public class Board {
             int[] amountOfBishops = {0, 0};
 
             for (Piece piece : pieces) {
+                switch (piece.getColor()) {
+                    case WHITE -> {
+                        if (piece.getClass() == King.class) { whiteKing = (King) piece; }
+                        if (piece.getClass() == Prince.class) { whitePrince = (Prince) piece; }
+                        if (piece.getClass() == Bishop.class) { whiteBishops[amountOfBishops[0]++] = (Bishop) piece; }
+                    }
+                    case BLACK -> {
+                        if (piece.getClass() == King.class) { blackKing = (King) piece; }
+                        if (piece.getClass() == Prince.class) { blackPrince = (Prince) piece; }
+                        if (piece.getClass() == Bishop.class) { blackBishops[amountOfBishops[1]++] = (Bishop) piece; }
+                    }
+                }
+
+                /*
                 //Князь
                 if (piece.getClass() == King.class) {
                     if (piece.getColor() == Color.WHITE) {
@@ -152,11 +207,11 @@ public class Board {
                     else{
                         blackBishops[amountOfBishops[1]++] = (Bishop) piece;
                     }
-                }
+                }*/
             }
         }
 
-        public boolean isValid() {
+        public boolean isValid(Color sideColor) {
             //Праверка наяўнасці Князёў
             if ((whiteKing == null) || (blackKing == null)) {
                 return false;
@@ -194,7 +249,11 @@ public class Board {
 
             //Праверка на Мат
 
+
             //Праверка на абарону Трона
+            if (getAmountOfAttackers(cells[THRONE_POSITION][THRONE_POSITION], sideColor) > 0) {
+                return false;
+            }
 
             return true;
         }

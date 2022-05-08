@@ -37,4 +37,19 @@ public class Menu {
     public static String getOpponentMove(AI aiPlayer) {
         return aiPlayer.getMove().getNotation().replace("-","").substring(1);
     }
+
+    public static void messageMoveResult(MoveInfo move){
+        switch (move.state){
+            case CORRECT -> {
+                System.out.println("Move: " +move.getNotation());
+            }
+            case INCORRECT -> {
+                System.out.println("Incorrect move. Try again!");
+            }
+            case NONE -> {
+                System.out.println("Incorrect! There is no figures at target position. Choose another one!");
+            }
+        }
+
+    }
 }

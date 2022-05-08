@@ -18,7 +18,9 @@ public class Chess {
                 enteredMove = Menu.getOpponentMove(aiPlayer);
             }
 
-            game.makeMove(enteredMove);
+            MoveInfo lastMove = game.makeMove(enteredMove);
+            Menu.messageMoveResult(lastMove);
+
             //
             /*ArrayList<Move> moves = game.getGameBoard().getAllPossibleMoves(game.getTurnColor());
             for (Move move : moves) {
