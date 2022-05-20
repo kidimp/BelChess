@@ -30,12 +30,13 @@ public class Board {
             System.out.print((y > -1) ? rotatedY +1 + "  " : "   ");           //подпіс па вертыкалі
             for (int x = 0; x < BOARD_SIZE; x++) {
                 //подпіс па гарызанталі
+                int rotatedX = !isBoardRotated ? x : BOARD_SIZE_IN_ARRAY -x;
                 if (y == -1) {
-                    System.out.print((char)(65 +x));
+                    System.out.print((char)(65 +rotatedX));
                 }
                 //Дошка і фігуркі
                 else {
-                    cells[rotatedY][x].draw();                          //Перагорнутае адлюстраванне па-вертыкалі
+                    cells[rotatedY][rotatedX].draw();                          //Перагорнутае адлюстраванне па-вертыкалі
                 }
                 System.out.print("  ");
             }
