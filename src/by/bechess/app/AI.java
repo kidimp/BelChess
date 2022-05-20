@@ -12,8 +12,8 @@ public class AI {
     }
 
     //Выпадковы ход з усіх магчымых
-    public Move getMove(){
+    public MoveInfo getMove(){
         ArrayList<Move> moves = gameBoard.getAllPossibleMoves(sideColor);
-        return moves.get((int)(Math.random() * moves.size()));
+        return new MoveInfo(moves.get((int)(Math.random() * moves.size())));
     }
 }

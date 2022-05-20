@@ -6,13 +6,15 @@ public abstract class Piece {
                      shortName;
     protected int value;
     protected Color color;
-    protected boolean isMoved;
+    protected int movesCount;
+    //protected boolean isMoved;
 
     public Piece(Cell cell, Color color){
         //this.cell = cell;
         //this.cell.setPiece(this);
         setCell(cell);
         this.color = color;
+        movesCount = 0;
     }
 
     protected boolean isCanTake(Cell toCell) {
@@ -37,8 +39,9 @@ public abstract class Piece {
 
     public abstract boolean isCanTakeThrone();
 
-    public void move(int x, int y){
-        //cell.setPiece(null);
+    public void move(Cell toCell){
+        cell.setPiece(null);
+        setCell(toCell);
     }
 
     public void setCell(Cell cell) {
@@ -49,7 +52,5 @@ public abstract class Piece {
     public void remove() {
         cell = null;
     }
-
-
 
 }

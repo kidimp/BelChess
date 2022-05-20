@@ -85,25 +85,35 @@ public class Board {
     }
 
     public boolean isFreePath(Cell fromCell, Cell toCell) {
-        int x = fromCell.getX(), y = fromCell.getY();
-        int toX = toCell.getX(), toY = toCell.getY();
+        Piece pieceOnCell = fromCell.getPiece();
+        //Калі вершнік, то праход вольны
+        if ((pieceOnCell != null) && (pieceOnCell.getClass() == Knight.class)) {
+            return true;
+        }
 
-        int diffX = toX - x;
-        int diffY = toY - y;
+        int x = fromCell.getX(), y = fromCell.getY(),
+            toX = toCell.getX(), toY = toCell.getY(),
+            diffX = toX - x, diffY = toY - y;
+
+        //Калі няма клетак між пачаткам і канцом - праход магчымы
+        if ((diffX == 1) || (diffY == 1)) {
+            return true;
+        }
+
+        //Знаходзім дэльту (на колькі клетак змяшчэнне)
         if (diffX != 0) { diffX /= Math.abs(diffX); }
         if (diffY != 0) { diffY /= Math.abs(diffY); }
 
-
         do {
-            if (x != toX) { x += diffX; }
-            if (y != toY) { y += diffY; }
+            if (x != toX -diffX) { x += diffX; }
+            if (y != toY -diffY) { y += diffY; }
 
             Cell cell = getCell(x, y);
             if ((cell.getPiece() != null)
                     || ((cell.getCellType() == Cell.Type.THRONE) && (fromCell.getPiece().isCanTakeThrone() == false))){
                 return false;
             }
-        } while ((x != toX) || (y != toY));
+        } while ((x != toX -diffX) || (y != toY -diffY));
 
         return true;
     }
@@ -113,11 +123,13 @@ public class Board {
         int amountOfAttackers = 0;
 
         for (Piece piece : pieces) {
-            if (piece.getColor() != sideColor) {
-                if (piece.isPossibleMove(cell)) {
-                    //Для ўсіх фігур акрамя каня павяраем ці вольны шлях
-                    if ((isFreePath(piece.cell, cell)) || (piece.getClass() == Knight.class)) {
-                        amountOfAttackers++;
+            if (piece.cell != null) {
+                if (piece.getColor() != sideColor) {
+                    if (piece.isPossibleMove(cell)) {
+                        //Для ўсіх фігур акрамя каня павяраем ці вольны шлях
+                        if (isFreePath(piece.cell, cell)) {
+                            amountOfAttackers++;
+                        }
                     }
                 }
             }
@@ -137,15 +149,17 @@ public class Board {
     public ArrayList<Move> getAllPossibleMoves(Color colorToFind) {
         ArrayList<Move> moves = new ArrayList<>();
         for (Piece piece : pieces) {
-            if (piece.getColor() == colorToFind) {
-                int fromX = piece.cell.getX(),
-                        fromY = piece.cell.getY();
-                for (int y = 0; y < BOARD_SIZE; y++) {
-                    for (int x = 0; x < BOARD_SIZE; x++) {
-                        if (!((fromX == x) && (fromY == y))) {
-                            Move move = new Move(fromX, fromY, x, y, this);
-                            if (move.isPossible()) {
-                                moves.add(move);
+            if (piece.cell != null) {
+                if (piece.getColor() == colorToFind) {
+                    int fromX = piece.cell.getX(),
+                            fromY = piece.cell.getY();
+                    for (int y = 0; y < BOARD_SIZE; y++) {
+                        for (int x = 0; x < BOARD_SIZE; x++) {
+                            if (!((fromX == x) && (fromY == y))) {
+                                Move move = new Move(fromX, fromY, x, y, this);
+                                if (move.isPossible()) {
+                                    moves.add(move);
+                                }
                             }
                         }
                     }
@@ -179,35 +193,6 @@ public class Board {
                         if (piece.getClass() == Bishop.class) { blackBishops[amountOfBishops[1]++] = (Bishop) piece; }
                     }
                 }
-
-                /*
-                //Князь
-                if (piece.getClass() == King.class) {
-                    if (piece.getColor() == Color.WHITE) {
-                        whiteKing = (King) piece;
-                    }
-                    else{
-                        blackKing = (King) piece;
-                    }
-                }
-                //Княжыч
-                if (piece.getClass() == Prince.class) {
-                    if (piece.getColor() == Color.WHITE) {
-                        whitePrince = (Prince) piece;
-                    }
-                    else{
-                        blackPrince = (Prince) piece;
-                    }
-                }
-                //Гарматы
-                if (piece.getClass() == Bishop.class) {
-                    if (piece.getColor() == Color.WHITE) {
-                        whiteBishops[amountOfBishops[0]++] = (Bishop) piece;
-                    }
-                    else{
-                        blackBishops[amountOfBishops[1]++] = (Bishop) piece;
-                    }
-                }*/
             }
         }
 
@@ -237,21 +222,28 @@ public class Board {
                         return false;
                     }
                 }
+
+                //Праверка на абарону Трона (нельга хадзіць на трон пад атакай і трэба абараняцца, калі атакуюць на троне)
+                if ((pieceOnThrone.color == sideColor)
+                        && (getAmountOfAttackers(cells[THRONE_POSITION][THRONE_POSITION], sideColor) > 0)) {
+                    return false;
+                }
             }
 
             //Праверка разнапольных гарматаў
-            if (whiteBishops[0].cell.getCellColor() == whiteBishops[1].cell.getCellColor()) {
-                return false;
+            if ((whiteBishops[0].cell != null) && (whiteBishops[1].cell != null)) {
+                if (whiteBishops[0].cell.getCellColor() == whiteBishops[1].cell.getCellColor()) {
+                    return false;
+                }
             }
-            if (blackBishops[0].cell.getCellColor() == blackBishops[1].cell.getCellColor()) {
-                return false;
+            if ((blackBishops[0].cell != null) && (blackBishops[1].cell != null)) {
+                if (blackBishops[0].cell.getCellColor() == blackBishops[1].cell.getCellColor()) {
+                    return false;
+                }
             }
 
-            //Праверка на Мат
-
-
-            //Праверка на абарону Трона
-            if (getAmountOfAttackers(cells[THRONE_POSITION][THRONE_POSITION], sideColor) > 0) {
+            //Праверка на напад на Князя (князь не можа хадзіць на бітыя палі і іншыя фігуры не могуць станавіцца на палі, куды б'е князь)
+            if ((getAmountOfAttackers(whiteKing.cell, sideColor) > 0) || (getAmountOfAttackers(blackKing.cell, sideColor) > 0)){
                 return false;
             }
 

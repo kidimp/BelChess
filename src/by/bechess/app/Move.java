@@ -16,19 +16,20 @@ public class Move {
         toPoint = new Point(toX, toY);
         this.board = board;
         piece = board.findPiece(fromPoint);
+        pieceEaten = board.findPiece(toPoint);
     }
 
     public void make() {
-        piece.cell.setPiece(null);
-        piece.setCell(board.getCell(toPoint.x, toPoint.y));
+        piece.move(board.getCell(toPoint.x, toPoint.y));
+        piece.movesCount++;
         if (pieceEaten != null) {
             pieceEaten.remove();
         }
     }
 
     public void revoke(){
-        piece.cell.setPiece(null);
-        piece.setCell(board.getCell(fromPoint.x, fromPoint.y));
+        piece.move(board.getCell(fromPoint.x, fromPoint.y));
+        if (--piece.movesCount < 0) { piece.movesCount = 0; }
         if (pieceEaten != null) {
             pieceEaten.setCell(board.getCell(toPoint.x, toPoint.y));
         }
@@ -40,8 +41,8 @@ public class Move {
         boolean toRet = false;
 
         if ((piece != null) && (piece.isPossibleMove(board.getCell(toPoint.x, toPoint.y)))) {
-            //Для ўсіх фігур акрамя каня павяраем ці вольны шлях
-            if ((piece.getClass() == Knight.class) || (board.isFreePath(piece.cell, board.getCell(toPoint.x, toPoint.y)))) {
+            //Павяраем ці вольны шлях праз шлях
+            if (board.isFreePath(piece.cell, board.getCell(toPoint.x, toPoint.y))) {
                 //Робім ход, правяраем пазіцыю для пэўнага колеру, адмяняем
                 make();
                 if (board.position.isValid(piece.getColor())) {

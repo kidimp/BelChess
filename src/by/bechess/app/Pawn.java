@@ -15,7 +15,7 @@ public class Pawn extends Piece{
         int deltaY = Math.abs(cell.getY() -toCell.getY());
 
         if (((deltaX == 0)
-                && ((deltaY == 1) || ((deltaY == 2) && (!isMoved))) && (toCell.getPiece() == null))
+                && ((deltaY == 1) || ((deltaY == 2) && (movesCount == 0))) && (toCell.getPiece() == null))
             || ((deltaX == 1) && (deltaY == 1) && (isCanTake(toCell)))) {
             //Ход толькі наперад
             if (((color == Color.WHITE) && (cell.getY() < toCell.getY()))
