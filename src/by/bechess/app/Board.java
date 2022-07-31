@@ -3,7 +3,7 @@ package by.bechess.app;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Board {
+public class Board implements Cloneable{
     private final int BOARD_SIZE = 9,
               BOARD_SIZE_IN_ARRAY = BOARD_SIZE -1,
               THRONE_POSITION = 4;
@@ -21,6 +21,27 @@ public class Board {
         }
 
         isBoardRotated = (playersColor == Color.BLACK) ? true : false;
+    }
+
+    @Override
+    public Board clone() {
+        Board copyBoard;
+        try {
+            copyBoard = (Board) super.clone();
+            //Кланаванне фігурак
+            ArrayList<Piece> copyPieces = new ArrayList<>();
+            for (Piece pieceToCopy : pieces) {
+                copyPieces.add(pieceToCopy.clone());
+            }
+            pieces = copyPieces;
+            //Ствараем пазіцыю
+            position = new Position();
+        }
+        catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return copyBoard;
     }
 
     //Намаляваць дошку, фігуркі і подпісы

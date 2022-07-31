@@ -1,6 +1,6 @@
 package by.bechess.app;
 
-public abstract class Piece {
+public abstract class Piece implements Cloneable {
     protected Cell cell;
     protected String name,
                      shortName;
@@ -15,6 +15,13 @@ public abstract class Piece {
         setCell(cell);
         this.color = color;
         movesCount = 0;
+    }
+
+    @Override
+    public Piece clone() throws CloneNotSupportedException {
+        Piece copyPiece = (Piece) super.clone();
+        copyPiece.setCell(new Cell(copyPiece.cell.getX(), copyPiece.cell.getY()));
+        return copyPiece;
     }
 
     protected boolean isCanTake(Cell toCell) {

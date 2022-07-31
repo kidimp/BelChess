@@ -13,7 +13,10 @@ public class AI {
 
     //Выпадковы ход з усіх магчымых
     public MoveInfo getMove(){
-        ArrayList<Move> moves = gameBoard.getAllPossibleMoves(sideColor);
+        Board copiedBoard = gameBoard.clone();
+
+
+        ArrayList<Move> moves = copiedBoard.getAllPossibleMoves(sideColor);
         return new MoveInfo(moves.get((int)(Math.random() * moves.size())));
     }
 }
