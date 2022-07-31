@@ -8,8 +8,10 @@ public class Rook extends Piece{
         this.value = 4;
     }
 
+    @Override
     public boolean isCanTakeThrone() { return false; }
 
+    @Override
     public boolean isPossibleMove(Cell toCell) {
         int deltaX = Math.abs(cell.getX() -toCell.getX());
         int deltaY = Math.abs(cell.getY() -toCell.getY());

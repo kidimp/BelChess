@@ -8,8 +8,10 @@ public class King extends Piece{
         this.value = 7;
     }
 
+    @Override
     public boolean isCanTakeThrone() { return true; }
 
+    @Override
     public boolean isPossibleMove(Cell toCell) {
         int deltaX = Math.abs(cell.getX() -toCell.getX());
         int deltaY = Math.abs(cell.getY() -toCell.getY());
