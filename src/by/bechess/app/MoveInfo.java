@@ -33,6 +33,7 @@ public class MoveInfo extends Move{
             toPoint = parseStringNotation(fullNotation.substring(2, 4));
             this.board = board;
             piece = board.findPiece(fromPoint);
+            pieceEaten = board.findPiece(toPoint);
         }
     }
 

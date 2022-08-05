@@ -4,8 +4,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Board implements Cloneable{
-    private final int BOARD_SIZE = 9,
-              BOARD_SIZE_IN_ARRAY = BOARD_SIZE -1,
+    public static final int BOARD_SIZE = 9;
+    private final int BOARD_SIZE_IN_ARRAY = BOARD_SIZE -1,
               THRONE_POSITION = 4;
     private Cell[][] cells;
     private ArrayList<Piece> pieces;
@@ -118,7 +118,7 @@ public class Board implements Cloneable{
             diffX = toX - x, diffY = toY - y;
 
         //Калі няма клетак між пачаткам і канцом - праход магчымы
-        if ((diffX == 1) || (diffY == 1)) {
+        if ((Math.abs(diffX) == 1) || (Math.abs(diffY) == 1)) {
             return true;
         }
 
@@ -166,6 +166,8 @@ public class Board implements Cloneable{
     public Cell getCell(int x, int y) {
         return cells[y][x];
     }
+
+    public ArrayList<Piece> getAllPieces() {return pieces; }
 
     //Атрымаць усе хады для пэўнага колеру
     public ArrayList<Move> getAllPossibleMoves(Color colorToFind) {
@@ -234,14 +236,18 @@ public class Board implements Cloneable{
 
                 //Праверка белага Князя, каб быў на Троне або ў Палацы
                 if (pieceOnThrone.getColor() == Color.WHITE) {
-                    if (whiteKing.cell.getCellType() == Cell.Type.REGULAR) {
-                        return false;
+                    if (whiteKing.cell != null) {
+                        if (whiteKing.cell.getCellType() == Cell.Type.REGULAR) {
+                            return false;
+                        }
                     }
                 }
                 //Праверка чорнага Князя, каб быў на Троне або ў Палацы
                 else {
-                    if (blackKing.cell.getCellType() == Cell.Type.REGULAR) {
-                        return false;
+                    if (blackKing.cell != null) {
+                        if (blackKing.cell.getCellType() == Cell.Type.REGULAR) {
+                            return false;
+                        }
                     }
                 }
 
@@ -265,7 +271,8 @@ public class Board implements Cloneable{
             }
 
             //Праверка на напад на Князя (князь не можа хадзіць на бітыя палі і іншыя фігуры не могуць станавіцца на палі, куды б'е князь)
-            if ((getAmountOfAttackers(whiteKing.cell, sideColor) > 0) || (getAmountOfAttackers(blackKing.cell, sideColor) > 0)){
+            if (((whiteKing.cell != null) && (getAmountOfAttackers(whiteKing.cell, sideColor) > 0))
+                || ((blackKing.cell != null) && (getAmountOfAttackers(blackKing.cell, sideColor) > 0))){
                 return false;
             }
 

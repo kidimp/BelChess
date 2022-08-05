@@ -20,7 +20,9 @@ public abstract class Piece implements Cloneable {
     @Override
     public Piece clone() throws CloneNotSupportedException {
         Piece copyPiece = (Piece) super.clone();
-        copyPiece.setCell(new Cell(copyPiece.cell.getX(), copyPiece.cell.getY()));
+        if (copyPiece.cell != null) {
+            copyPiece.setCell(new Cell(copyPiece.cell.getX(), copyPiece.cell.getY()));
+        }
         return copyPiece;
     }
 
@@ -59,5 +61,4 @@ public abstract class Piece implements Cloneable {
     public void remove() {
         cell = null;
     }
-
 }
