@@ -6,7 +6,7 @@ public class Chess {
     public static void main(String[] args){
         Game game = new Game(Menu.getSideColor());
         game.startNewGame();
-        AI aiPlayer = new AI(game.getGameBoard(), (game.getPlayerColor() == Color.WHITE) ? Color.BLACK : Color.WHITE);
+        AI aiPlayer = new AI(game.getGameBoard(), Color.getReversedColor(game.getPlayerColor()), AI.Level.MEDIUM);
 
         //Бясконца па-чарзе даем магчымасць выбару ходу беламу і чорнаму
         while(game.getGameStatus() != Game.Status.FINISHED) {
