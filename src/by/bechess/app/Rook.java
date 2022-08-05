@@ -5,7 +5,7 @@ public class Rook extends Piece{
         super(cell, color);
         this.name = (color == Color.WHITE) ? "\u2656" : "\u265c";
         this.shortName = "L";
-        this.value = 4;
+        this.value = 5;
     }
 
     @Override

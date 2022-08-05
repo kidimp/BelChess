@@ -5,7 +5,7 @@ public class Prince extends Piece{
         super(cell, color);
         this.name = (color == Color.WHITE) ? "\u2654" : "\u265a";
         this.shortName = "K";
-        this.value = 6;
+        this.value = 9;
     }
 
     @Override

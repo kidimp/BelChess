@@ -5,7 +5,7 @@ public class King extends Piece{
         super(cell, color);
         this.name = (color == Color.WHITE) ? "\u2654" : "\u265a";
         this.shortName = "A";
-        this.value = 7;
+        this.value = 12;
     }
 
     @Override
