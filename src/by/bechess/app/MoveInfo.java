@@ -38,6 +38,7 @@ public class MoveInfo extends Move{
     }
 
     public String getNotation() {
-        return piece.getShortName() +(char)(fromPoint.x +97) + String.valueOf(fromPoint.y +1) + "-" +(char)(toPoint.x +97) + String.valueOf(toPoint.y +1);
+        return piece.getShortName() +(char)(fromPoint.x +97) + String.valueOf(fromPoint.y +1)
+                + ((pieceEaten == null) ? "-" : ":") +(char)(toPoint.x +97) + String.valueOf(toPoint.y +1);
     }
 }

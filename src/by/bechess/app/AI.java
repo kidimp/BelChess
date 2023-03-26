@@ -1,13 +1,11 @@
 package by.bechess.app;
 
-import java.util.ArrayList;
+import by.bechess.app.engine.Engine;
 
 public class AI {
     private Board gameBoard;
     private Color sideColor;
     private Level aiLevel;
-
-
 
     public AI(Board gameBoard, Color sideColor, Level aiLevel) {
         this.gameBoard = gameBoard.clone();
@@ -21,11 +19,6 @@ public class AI {
         MoveInfo move = engine.getBestMove();
 
         return move;
-
-        /*Board copiedBoard = gameBoard.clone();
-
-        ArrayList<Move> moves = copiedBoard.getAllPossibleMoves(sideColor);
-        return new MoveInfo(moves.get((int)(Math.random() * moves.size())));*/
     }
 
     public Board getGameBoard() { return gameBoard; }

@@ -39,7 +39,7 @@ public class Game {
     }
 
     public void changeTurn(){
-        whoisTurn = (whoisTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
+        whoisTurn = Color.getReversedColor(whoisTurn);
     }
 
     public Color getTurnColor() {
@@ -82,5 +82,11 @@ public class Game {
 
     public MoveInfo getMoveFromHistory(int index){
         return movesHistory.get(index);
+    }
+
+    public void checkForEndOfGame() {
+        if (gameBoard.getAllPossibleMoves(whoisTurn).size() == 0) {
+            gameStatus = Status.FINISHED;
+        }
     }
 }

@@ -6,7 +6,7 @@ public class Chess {
     public static void main(String[] args){
         Game game = new Game(Menu.getSideColor());
         game.startNewGame();
-        AI aiPlayer = new AI(game.getGameBoard(), Color.getReversedColor(game.getPlayerColor()), AI.Level.MEDIUM);
+        AI aiPlayer = new AI(game.getGameBoard(), Color.getReversedColor(game.getPlayerColor()), AI.Level.HARD);
 
         //Бясконца па-чарзе даем магчымасць выбару ходу беламу і чорнаму
         while(game.getGameStatus() != Game.Status.FINISHED) {
@@ -18,14 +18,12 @@ public class Chess {
                 enteredMove = Menu.getOpponentMove(aiPlayer);
             }
 
-            MoveInfo lastMove = game.makeMove(enteredMove);
-            Menu.messageMoveResult(lastMove);
-
-            //
-            /*ArrayList<Move> moves = game.getGameBoard().getAllPossibleMoves(game.getTurnColor());
-            for (Move move : moves) {
-                System.out.println(move.getNotation());
-            }*/
+            //Робім ход, запісваем і правярае на канец гульні
+            if (enteredMove != "") {
+                MoveInfo lastMove = game.makeMove(enteredMove);
+                Menu.messageMoveResult(lastMove);
+                game.checkForEndOfGame();
+            }
         }
     }
 }

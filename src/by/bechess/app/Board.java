@@ -145,7 +145,7 @@ public class Board implements Cloneable{
         int amountOfAttackers = 0;
 
         for (Piece piece : pieces) {
-            if (piece.cell != null) {
+            if (piece.isOnBoard()) {
                 if (piece.getColor() != sideColor) {
                     if (piece.isPossibleMove(cell)) {
                         //Для ўсіх фігур акрамя каня павяраем ці вольны шлях
@@ -173,10 +173,10 @@ public class Board implements Cloneable{
     public ArrayList<Move> getAllPossibleMoves(Color colorToFind) {
         ArrayList<Move> moves = new ArrayList<>();
         for (Piece piece : pieces) {
-            if (piece.cell != null) {
+            if (piece.isOnBoard()) {
                 if (piece.getColor() == colorToFind) {
                     int fromX = piece.cell.getX(),
-                            fromY = piece.cell.getY();
+                        fromY = piece.cell.getY();
                     for (int y = 0; y < BOARD_SIZE; y++) {
                         for (int x = 0; x < BOARD_SIZE; x++) {
                             if (!((fromX == x) && (fromY == y))) {
@@ -236,7 +236,7 @@ public class Board implements Cloneable{
 
                 //Праверка белага Князя, каб быў на Троне або ў Палацы
                 if (pieceOnThrone.getColor() == Color.WHITE) {
-                    if (whiteKing.cell != null) {
+                    if (whiteKing.isOnBoard()) {
                         if (whiteKing.cell.getCellType() == Cell.Type.REGULAR) {
                             return false;
                         }
@@ -244,7 +244,7 @@ public class Board implements Cloneable{
                 }
                 //Праверка чорнага Князя, каб быў на Троне або ў Палацы
                 else {
-                    if (blackKing.cell != null) {
+                    if (blackKing.isOnBoard()) {
                         if (blackKing.cell.getCellType() == Cell.Type.REGULAR) {
                             return false;
                         }
@@ -259,20 +259,20 @@ public class Board implements Cloneable{
             }
 
             //Праверка разнапольных гарматаў
-            if ((whiteBishops[0].cell != null) && (whiteBishops[1].cell != null)) {
+            if ((whiteBishops[0].isOnBoard()) && (whiteBishops[1].isOnBoard())) {
                 if (whiteBishops[0].cell.getCellColor() == whiteBishops[1].cell.getCellColor()) {
                     return false;
                 }
             }
-            if ((blackBishops[0].cell != null) && (blackBishops[1].cell != null)) {
+            if ((blackBishops[0].isOnBoard()) && (blackBishops[1].isOnBoard())) {
                 if (blackBishops[0].cell.getCellColor() == blackBishops[1].cell.getCellColor()) {
                     return false;
                 }
             }
 
             //Праверка на напад на Князя (князь не можа хадзіць на бітыя палі і іншыя фігуры не могуць станавіцца на палі, куды б'е князь)
-            if (((whiteKing.cell != null) && (getAmountOfAttackers(whiteKing.cell, sideColor) > 0))
-                || ((blackKing.cell != null) && (getAmountOfAttackers(blackKing.cell, sideColor) > 0))){
+            if (((whiteKing.isOnBoard()) && (getAmountOfAttackers(whiteKing.cell, sideColor) > 0))
+                || ((blackKing.isOnBoard()) && (getAmountOfAttackers(blackKing.cell, sideColor) > 0))){
                 return false;
             }
 

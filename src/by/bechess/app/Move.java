@@ -37,6 +37,10 @@ public class Move {
 
     public Piece getPiece() { return piece; }
 
+    public Piece getPieceEaten() { return pieceEaten; }
+
+    public Board getBoard() { return board; }
+
     public boolean isPossible() {
         boolean toRet = false;
 

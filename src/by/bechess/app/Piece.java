@@ -44,6 +44,8 @@ public abstract class Piece implements Cloneable {
 
     public Color getColor() { return color; }
 
+    public Cell getCell() { return cell; }
+
     public abstract boolean isPossibleMove(Cell toCell);
 
     public abstract boolean isCanTakeThrone();
@@ -60,5 +62,9 @@ public abstract class Piece implements Cloneable {
 
     public void remove() {
         cell = null;
+    }
+
+    public boolean isOnBoard() {
+        return (cell != null);
     }
 }
