@@ -118,7 +118,7 @@ public class Board implements Cloneable{
             diffX = toX - x, diffY = toY - y;
 
         //Калі няма клетак між пачаткам і канцом - праход магчымы
-        if ((Math.abs(diffX) == 1) || (Math.abs(diffY) == 1)) {
+        if ((Math.abs(diffX) <= 1) && (Math.abs(diffY) <= 1)) {
             return true;
         }
 
